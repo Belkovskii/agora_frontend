@@ -1,0 +1,7 @@
+.itemScrollContainer, .stockScrollContainer {
+    width: 400px;
+}
+
+.selectStockLabel {
+    padding-top: 20px;
+}

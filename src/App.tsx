@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import MainPage from './MainPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainPage/>    
   );
 }
 
 export default App;
+
+/*
+
+В моём проекте имеется следующая структура: 
+в src есть папка Stock, отвечающая за работу со складом. 
+В ней - подразделы - StockBalance (отображение баланса товаров на складе),
+ Withdrawal (списания товаров), Receipt (поступление товаров),
+  Statistics (статистика). 
+  У каждого подраздела должны быть свои редьюсеры.
+   При этом они должны быть объединены в редьюсер уровня Stock. 
+   Помимо Stock будут и другие разделы со своими подразделами. 
+   Для создания reducer и action используется метод createSlice.
+    Учитывая эти особенности проекта, как использовать redux thunk
+     для выполнения асинхронных запросов? 
+     Где объявлять и реализовывать асинхронный метод? 
+     Приведи пример для запроса баланса товаров подразделе StockBalance раздела Stock
+*/
