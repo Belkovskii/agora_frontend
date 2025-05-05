@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import connectionData from "../../../Connection";
 import { StockBalanceState } from "./BalanceTypes";
 import { Item, Stock } from "../StockTypes";
@@ -83,7 +83,13 @@ const stockBalanceSlice = createSlice({
   name: 'stockBalance',
   initialState,
   reducers: {
-    // ваши редьюсеры
+    setSelectedItem(state, action: PayloadAction<string>) : StockBalanceState {
+        console.log(`setSelectedItem action: ${action}`);
+        return {...state, chosenItemId : action.payload}
+    },
+    setSelectedStock(state, action: PayloadAction<string>) : StockBalanceState {
+        return {...state, chosenStockId : action.payload}
+    }
   },
   extraReducers: builder => {
     builder.addCase(fetchItems.fulfilled, (state, action) => {            
@@ -112,4 +118,5 @@ const stockBalanceSlice = createSlice({
 }});
 
 export  { fetchItems, setNewItems, fetchStocks, setNewStocks };
+export const {setSelectedItem, setSelectedStock} = stockBalanceSlice.actions
 export default stockBalanceSlice.reducer;

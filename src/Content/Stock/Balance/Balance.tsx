@@ -1,4 +1,3 @@
-
 import React, {useState, useEffect} from "react"
 import { StockBalanceState } from "./BalanceTypes"
 import InfiniteScrollWithSearch from "../../../Functional/InfiniteScrollWithSearch/InfiniteScrollWithSearch";
