@@ -2,6 +2,6 @@
     width: 400px;
 }
 
-.selectStockLabel {
+.selectStockLabel, .itemsLeftSpan {
     padding-top: 20px;
 }

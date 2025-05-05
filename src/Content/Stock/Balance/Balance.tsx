@@ -20,8 +20,9 @@ const Balance : React.FunctionComponent<{
         stockBalanceState: StockBalanceState, 
         filterByName : FilterByNameFn,        
         handleChange : HandleChangeFn,        
-        onMenuScrollDown : OnMenyScrollFn
-    }> = ({stockBalanceState, filterByName, handleChange, onMenuScrollDown}) => {        
+        onMenuScrollDown : OnMenyScrollFn,
+        balance : number
+    }> = ({stockBalanceState, filterByName, handleChange, onMenuScrollDown, balance}) => {        
         
     const itemOptions  = stockBalanceState.items.map(item => ({ label: item.name, value: item.id }));
     const stockOptions  = stockBalanceState.stocks.map(stock => ({ label: stock.name, value: stock.id }));
@@ -53,6 +54,9 @@ const Balance : React.FunctionComponent<{
                     options = {stockOptions}
                     handleCountChange = {onStockMenuScrollDown}
                 />
+            </div>
+            <div  className="itemsLeftSpan">
+                <span>Остаток товара на складе: {balance}</span>
             </div>
             
         </div>

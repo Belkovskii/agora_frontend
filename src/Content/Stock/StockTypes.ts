@@ -11,3 +11,11 @@ export interface Item {
     measurementUnit : string,
     createdAt : Date
 }
+
+export interface StockBalance {
+    id: string,
+    inventoryItemId: string,
+    stockId: string,
+    balance: number,
+    balanceForFractional: number
+}

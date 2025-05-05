@@ -7,7 +7,7 @@ export class StockBalanceState {
     chosenItemId : string = "";
     chosenStockId : string = "";
     itemsLeft : number = 0;
-    latestWithdrawal : Date | null = null;
-    latestReceipt : Date | null = null;
+    latestWithdrawal : string | null = null;
+    latestReceipt : string | null = null;
     itemDescription : string = "";
 }

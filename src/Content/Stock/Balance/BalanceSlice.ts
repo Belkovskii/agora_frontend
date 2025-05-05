@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import connectionData from "../../../Connection";
 import { StockBalanceState } from "./BalanceTypes";
-import { Item, Stock } from "../StockTypes";
+import { Item, Stock, StockBalance } from "../StockTypes";
 
 const initialState = new StockBalanceState();
 
@@ -18,7 +18,7 @@ const fetchItems = createAsyncThunk<Item[], { from: number; to: number, name : s
             id: item.id,
             name: item.name,
             measurementUnit: item.stockMeasurementUnit || "",
-            createdAt: new Date(item.createdAt),
+            createdAt: item.createdAt,
             description: item.description
         }));
     }
@@ -37,7 +37,7 @@ const setNewItems = createAsyncThunk<Item[], { from: number; to: number, name : 
             id: item.id,
             name: item.name,
             measurementUnit: item.stockMeasurementUnit || "",
-            createdAt: new Date(item.createdAt),
+            createdAt: item.createdAt.trim(),
             description: item.description
         }));
     }
@@ -79,6 +79,22 @@ const setNewStocks = createAsyncThunk<Stock[], { from: number; to: number, name 
     }
 );
 
+const retrieveBalance = createAsyncThunk<StockBalance, {stockId : string, itemId : string}>(
+    'stockBalance/retrieveBalance',
+    async ({stockId, itemId}) => {
+        console.log(85)
+        const endpoint = `${connectionData.host}/StockBalance/${itemId}/${stockId}`;
+        console.log(endpoint)
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+            console.log(88)
+            throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    }
+)
+
 const stockBalanceSlice = createSlice({
   name: 'stockBalance',
   initialState,
@@ -114,9 +130,12 @@ const stockBalanceSlice = createSlice({
         }
     }).addCase(setNewStocks.fulfilled, (state, action) => {
         return {...state, stocks : [...action.payload]}
+    }).addCase(retrieveBalance.fulfilled, (state, action) => {
+        console.log(141)
+        return {...state, itemsLeft : action.payload.balance}
     });
 }});
 
-export  { fetchItems, setNewItems, fetchStocks, setNewStocks };
+export  { fetchItems, setNewItems, fetchStocks, setNewStocks, retrieveBalance };
 export const {setSelectedItem, setSelectedStock} = stockBalanceSlice.actions
 export default stockBalanceSlice.reducer;

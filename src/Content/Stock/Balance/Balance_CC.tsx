@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from "react";
 import Balance from "./Balance"
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +7,8 @@ import {
     fetchStocks, 
     setNewStocks,
     setSelectedItem,
-    setSelectedStock
+    setSelectedStock,
+    retrieveBalance
  } from "./BalanceSlice";
 import {RootState} from "./../../../store";
 import { AppDispatch } from "./../../../store";
@@ -27,28 +27,22 @@ const Balance_CC : React.FunctionComponent = () => {
     const stockBalanceState = useSelector((state: RootState) => state.stock.balance);
 
     useEffect(() => {        
-        // dispatch(fetchItems({ from : fromItem, to : toItem, name : itemName }));
         dispatch(fetchItems({ from : fromItem, to : toItem, name : item.label }));
     }, [toItem, fromItem]);
 
-    useEffect(() => {
-        // dispatch(setNewItems({from : fromItem, to : toItem, name : itemName }))
+    useEffect(() => {        
         dispatch(setNewItems({from : fromItem, to : toItem, name : item.label }))
-    // }, [itemName]);
     }, [item]);
 
 
     useEffect(() => {
-        // dispatch(fetchStocks({from : fromStock, to : toStock, name : stockName}));
         dispatch(fetchStocks({from : fromStock, to : toStock, name : stock.label}));
 
     }, [toStock, fromStock]);
 
     useEffect(() => {
-        // dispatch(setNewStocks({from : fromStock, to : toStock, name : stockName }));
         dispatch(setNewStocks({from : fromStock, to : toStock, name : stock.label }));
     }, [stock]);
-// }, [stockName]);
 
 
     const filterByName = {
@@ -56,14 +50,12 @@ const Balance_CC : React.FunctionComponent = () => {
             console.log(inputValue)
             setFromItem(0);
             setToItem(10);
-            // setItemName(inputValue.key ?? "");
             setItem(item => ({label: inputValue.key ?? "", value : item.value})); 
 
         },
         filterStockByName(inputValue : any) {
             setFromStock(0);
             setToStock(10);
-            // setStockName(inputValue.key ?? "");
             setStock(stock => ({label : inputValue.key ?? "", value : stock.value}));
         }
     };
@@ -83,19 +75,27 @@ const Balance_CC : React.FunctionComponent = () => {
     const handleChange = {
         handleItemChange(selectedOption: any) {
             if (selectedOption) {                           
-                // setItemName(selectedOption.label);  
                 setItem(selectedOption);  
                 dispatch(setSelectedItem(selectedOption.value));
+                console.log(stock.value)
+                if (stock.value.length > 0) {
+                    console.log(81)
+                    dispatch(retrieveBalance({stockId : stock.value, itemId : selectedOption.value}))
+                }
             }
         },
         handleStockChange(selectedOption: any) {
             if (selectedOption) {
-                // setStockName(selectedOption.label);
                 setStock(selectedOption);
                 dispatch(setSelectedStock(selectedOption.value));
+                if (item.value.length > 0) {
+                    console.log(90)
+                    dispatch(retrieveBalance({stockId : selectedOption.value, itemId : item.value}))
+                }
             }
-        }
+        }        
     }
+
 
     return (
         <Balance 
@@ -103,6 +103,7 @@ const Balance_CC : React.FunctionComponent = () => {
             filterByName={filterByName}
             handleChange={handleChange}                               
             onMenuScrollDown={onMenuScrollDown}  
+            balance={stockBalanceState.itemsLeft}
         />
     )
 }
