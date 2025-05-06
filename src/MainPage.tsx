@@ -4,6 +4,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import './MainPageStyles/MainPageStyle.css';
 //import Content from './Content/Content';
 import Balance_CC from './Content/Stock/Balance/Balance_CC';
+import Sidebar from './Sidebar/Sidebar';
+import { ReactComponent as Parthenon}  from './parthenon.svg';
 
 const MainPage : React.FunctionComponent = () => {
   const [submenuState, setSubmenuState] = useState<boolean>(false);
@@ -61,19 +63,30 @@ const MainPage : React.FunctionComponent = () => {
     <div className="container" ref={containerRef}>
       <header className="header">   
         <div className="main-menu">
-          <h1>Заголовок приложения</h1>
+
+          <div className='logotype'>
+            <div className='logo-container'>
+              <Parthenon className='logo' />            
+            </div>
+            <h1>Agora CRM</h1>
+          </div>
+          
+          
         </div>
         <div className="avatar-login">         
           <p>Avatar/Login</p>
-        </div>
-      </header>
+        </div>        
+      </header>      
       <div  className="sidebar" onClick={()=> setSubmenuState(s => !s)}>
+        <Sidebar/>
         {/* <Navigation/> */}
       </div>
       <div className={`sub-sidebar ${submenuState ? '' : 'fade-out'}`} 
            ref={subSidebarRef} 
            onTransitionEnd={handleTransitionEnd}
-      >Sub-sidebar content</div>
+      >
+        
+      </div>
       <div className="main" ref={mainRef}>
         {/* <Content/> */}
         <Balance_CC/>

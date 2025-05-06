@@ -9,7 +9,7 @@ export interface Item {
     id : string,
     name : string,
     measurementUnit : string,
-    createdAt : Date
+    createdAt : string
 }
 
 export interface StockBalance {

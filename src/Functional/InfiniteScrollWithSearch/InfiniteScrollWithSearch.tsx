@@ -16,7 +16,7 @@ const InfiniteScrollWithSearch : React.FunctionComponent<{
         setInputValue(() => input);
         filterByInput(input);
     }   
-    
+     
     const handleMenuScrollToBottom = () => {
         setFrom(from => from + 10);
         setTo(to => to + 10);
@@ -25,7 +25,7 @@ const InfiniteScrollWithSearch : React.FunctionComponent<{
 
     return (
         <div>
-            <Select
+            <Select 
                 onInputChange={handleInputChange}                
                 onChange={handleSelect}
                 isSearchable                

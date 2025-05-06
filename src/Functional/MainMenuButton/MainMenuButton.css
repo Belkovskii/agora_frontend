@@ -1,0 +1,39 @@
+.main-menu-button {
+    width: 100px;
+    height: 60px;
+    background: linear-gradient(to right, #e86e56, #e48e51);
+    margin: 10px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-radius: 10px;
+    padding: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+.label-text {
+    text-align: center;
+}
+
+.button-icon {
+    fill: white; 
+    width: 40px;
+    height : 40px; 
+}
+
+.main-menu-button:hover .button-icon {
+    fill: #b6d8ea;
+}
+
+.main-menu-button:hover {
+    color : #b6d8ea;
+    cursor: pointer;
+}
+
+.main-menu-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
