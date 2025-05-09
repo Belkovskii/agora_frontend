@@ -1,0 +1,19 @@
+.buttonContainer {
+    width: 90%;
+    height: 40px;
+    background-color: #152837;
+    color: white;
+    margin: 15px 20px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: smaller;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonContainer:hover {
+    cursor: pointer;
+    color : #b6d8ea;
+}

@@ -99,8 +99,7 @@ const stockBalanceSlice = createSlice({
   name: 'stockBalance',
   initialState,
   reducers: {
-    setSelectedItem(state, action: PayloadAction<string>) : StockBalanceState {
-        console.log(`setSelectedItem action: ${action}`);
+    setSelectedItem(state, action: PayloadAction<string>) : StockBalanceState {        
         return {...state, chosenItemId : action.payload}
     },
     setSelectedStock(state, action: PayloadAction<string>) : StockBalanceState {
@@ -131,7 +130,6 @@ const stockBalanceSlice = createSlice({
     }).addCase(setNewStocks.fulfilled, (state, action) => {
         return {...state, stocks : [...action.payload]}
     }).addCase(retrieveBalance.fulfilled, (state, action) => {
-        console.log(141)
         return {...state, itemsLeft : action.payload.balance}
     });
 }});

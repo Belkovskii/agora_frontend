@@ -1,17 +1,36 @@
 import React, { useRef, useState, useEffect } from 'react';
-//import Navigation from './SideBar/Navigation';
-
 import './MainPageStyles/MainPageStyle.css';
-//import Content from './Content/Content';
 import Balance_CC from './Content/Stock/Balance/Balance_CC';
 import Sidebar from './Sidebar/Sidebar';
+import Submenu from './Submenu/Submenu';
 import { ReactComponent as Parthenon}  from './parthenon.svg';
+import {ReactComponent as StockIcon} from "./Sidebar/icons/stock.svg";
+import {ReactComponent as CalendarIcon} from "./Sidebar/icons/calendar.svg";
+import {ReactComponent as SalesIcon} from "./Sidebar/icons/sales.svg";
+import {ReactComponent as CustomersIcon} from "./Sidebar/icons/customer.svg";
+import {ReactComponent as TaskListIcon} from "./Sidebar/icons/tasklist.svg";
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from './store';
+import { SideMenuItem } from './Sidebar/SidebarTypes';
+import { MenuItem, setMenuItemClicked, setSubmenuItemClicked } from './MainPageReducer';
+import { stat } from 'fs';
+import { SubmenuItemButton } from './Submenu/SubmenuButton/SubmenuTypes';
+
+const logoToNames : Map<string, React.FunctionComponent<React.SVGProps<SVGSVGElement>>> = new Map([
+  ['StockIcon', StockIcon],
+  ['CalendarIcon', CalendarIcon],
+  ['SalesIcon', SalesIcon],
+  ['CustomersIcon', CustomersIcon],
+  ['TaskListIcon', TaskListIcon]
+]);
 
 const MainPage : React.FunctionComponent = () => {
   const [submenuState, setSubmenuState] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mainRef = useRef<HTMLDivElement | null>(null);  
   const subSidebarRef = useRef<HTMLDivElement | null>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleTransitionEnd : React.TransitionEventHandler<HTMLDivElement> = (event : React.TransitionEvent<HTMLDivElement>) => {
     if (event.propertyName === 'opacity' || event.propertyName === 'transform') {
@@ -20,6 +39,8 @@ const MainPage : React.FunctionComponent = () => {
       }
     }
   };
+
+  const mainMenuState = useSelector((state : RootState) => state.mainMenu);
 
   useEffect(() => {
     if (submenuState) {
@@ -59,12 +80,33 @@ const MainPage : React.FunctionComponent = () => {
     }
   };
 
+  const menuState = useSelector((state: RootState) => state);
+
+  const items : SideMenuItem[] = menuState.mainMenu.menu.map(item => ({
+    icon : logoToNames.get(item.icon)!,
+    label : item.label,
+    value : item.key
+  }));
+
+  const clikedItem = menuState.mainMenu.menu.find(item => item.isClicked);
+  const submenuItems : SubmenuItemButton[] = clikedItem ? 
+    clikedItem.submenuItems.map(submenuItem => ({label : submenuItem.label, key : submenuItem.key})) : [];
+
+  const onMenuItemClick = (itemKey : number) => {
+    dispatch(setMenuItemClicked(itemKey));
+    setSubmenuState(true);
+  }
+
+  const onSubmenuItemClick = (submenuItemKey : number) => {
+    dispatch(setSubmenuItemClicked(submenuItemKey));
+  }
+
   return (
     <div className="container" ref={containerRef}>
       <header className="header">   
         <div className="main-menu">
 
-          <div className='logotype'>
+          <div className='logotype' onClick={()=> setSubmenuState(false)}>
             <div className='logo-container'>
               <Parthenon className='logo' />            
             </div>
@@ -76,17 +118,20 @@ const MainPage : React.FunctionComponent = () => {
         <div className="avatar-login">         
           <p>Avatar/Login</p>
         </div>        
-      </header>      
-      <div  className="sidebar" onClick={()=> setSubmenuState(s => !s)}>
-        <Sidebar/>
-        {/* <Navigation/> */}
+      </header>   
+
+      {/* <div  className="sidebar" onClick={()=> setSubmenuState(s => !s)}> */}
+      <div  className="sidebar">
+        <Sidebar items={items} onMenuItemClick={onMenuItemClick}/>        
       </div>
+
       <div className={`sub-sidebar ${submenuState ? '' : 'fade-out'}`} 
            ref={subSidebarRef} 
-           onTransitionEnd={handleTransitionEnd}
-      >
-        
+           onTransitionEnd={handleTransitionEnd}>
+            <Submenu items={submenuItems} onSubmenuItemClick={onSubmenuItemClick}/>
       </div>
+
+
       <div className="main" ref={mainRef}>
         {/* <Content/> */}
         <Balance_CC/>

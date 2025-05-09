@@ -27,6 +27,11 @@ body, html {
     flex-direction: row;
     align-items: center;
     width: fit-content;
+    height: 85%;
+  }
+
+  .logotype:hover {
+    cursor: pointer;
   }
 
   .logotype h1 {

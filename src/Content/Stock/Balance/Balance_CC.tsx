@@ -78,8 +78,7 @@ const Balance_CC : React.FunctionComponent = () => {
                 setItem(selectedOption);  
                 dispatch(setSelectedItem(selectedOption.value));
                 console.log(stock.value)
-                if (stock.value.length > 0) {
-                    console.log(81)
+                if (stock.value.length > 0) {                    
                     dispatch(retrieveBalance({stockId : stock.value, itemId : selectedOption.value}))
                 }
             }

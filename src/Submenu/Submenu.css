@@ -1,0 +1,6 @@
+.submenuItemsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1px 7px;
+}
