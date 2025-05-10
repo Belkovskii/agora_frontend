@@ -12,10 +12,11 @@ import {ReactComponent as TaskListIcon} from "./Sidebar/icons/tasklist.svg";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './store';
 import { SideMenuItemButton } from './Sidebar/SidebarTypes';
-import { MenuItem, setMenuItemClicked, setSubmenuItemClicked } from './MainPageReducer';
+import { MenuItem, setMenuItemClicked, setSubmenuItemClicked, setAllUnchecked } from './MainPageReducer';
 import { stat } from 'fs';
 import { SubmenuItemButton } from './Submenu/SubmenuButton/SubmenuTypes';
 import { NavLink } from "react-router-dom";
+import Content from './Content/Content';
 
 
 const logoToNames : Map<string, React.FunctionComponent<React.SVGProps<SVGSVGElement>>> = new Map([
@@ -57,7 +58,7 @@ const MainPage : React.FunctionComponent = () => {
   const openSubMenu = () => {
     if (containerRef.current) {
       const container = containerRef.current;
-      container.style.gridTemplateColumns = "1.2fr 1fr 12fr";
+      container.style.gridTemplateColumns = "1.2fr 1.3fr 12fr";
     }
     if (subSidebarRef.current) {
       subSidebarRef.current.classList.add('fade-in');      
@@ -88,7 +89,8 @@ const MainPage : React.FunctionComponent = () => {
     icon : logoToNames.get(item.icon)!,
     label : item.label,
     value : item.key,  
-    url : item.url  
+    url : item.url,
+    isClicked : item.isClicked
   }));
 
   const clikedItem = menuState.mainMenu.menu.find(item => item.isClicked);  
@@ -114,7 +116,10 @@ const MainPage : React.FunctionComponent = () => {
         <div className="main-menu">
 
           <NavLink to="" className="logo-nav">
-            <div className='logotype' onClick={()=> setSubmenuState(false)}>
+            <div className='logotype' onClick={()=> {
+              setSubmenuState(false);
+              dispatch(setAllUnchecked());
+            }}>
             <div className='logo-container'>
               <Parthenon className='logo' />            
             </div>
@@ -129,8 +134,7 @@ const MainPage : React.FunctionComponent = () => {
           <p>Avatar/Login</p>
         </div>        
       </header>   
-
-      {/* <div  className="sidebar" onClick={()=> setSubmenuState(s => !s)}> */}
+      
       <div  className="sidebar">
         <Sidebar items={items} onMenuItemClick={onMenuItemClick}/>        
       </div>
@@ -143,8 +147,9 @@ const MainPage : React.FunctionComponent = () => {
 
 
       <div className="main" ref={mainRef}>
+        <Content/>
         {/* <Content/> */}
-        <Balance_CC/>
+        {/* <Balance_CC/> */}
       </div>
     </div>
   );

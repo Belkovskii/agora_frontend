@@ -136,9 +136,19 @@ const mainPageMenuSlice = createSlice({
             submenuItems: newSubmenuItems
           };
         });
+      },
+
+      setAllUnchecked(state) {
+        state.menu = state.menu.map(item => {
+          return {
+            ...item, 
+            isClicked : false, 
+            submenuItems : [...item.submenuItems.map(submenuItem => ({...submenuItem, isClicked : false}))]
+          }
+        })
       }
     }
   });
 
-export const { setMenuItemClicked, setSubmenuItemClicked } = mainPageMenuSlice.actions;
+export const { setMenuItemClicked, setSubmenuItemClicked, setAllUnchecked } = mainPageMenuSlice.actions;
 export default mainPageMenuSlice.reducer;

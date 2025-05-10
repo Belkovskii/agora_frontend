@@ -10,11 +10,7 @@
     align-items: center;
 }
 
-.nav-link .selected-pointer {
-    display: none;
-}
-
-.nav-link-selected .selected-pointer {
+.selected-pointer {
     /* width : 8px;
     height: 7px;
     border-radius: 50%;

@@ -32,6 +32,9 @@ const Balance : React.FunctionComponent<{
 
     return(
         <div>
+            <div>
+                <h1>Остатки товара</h1>
+            </div>
             <div className="selectItemLabel">
                 <span>Выберите товар:</span>
             </div>

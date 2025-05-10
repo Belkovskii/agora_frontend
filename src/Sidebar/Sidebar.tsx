@@ -14,12 +14,19 @@ const Sidebar : React.FunctionComponent<{
     
     return (
         <div className="menu-items-column">
-            {items.map(item => {
-                return (
+            {items.map(item => {    
+                if (item.isClicked) {
+                    return (
+                        <NavLink to={item.url} 
+                            className={({isActive}) => "nav-link" + (isActive ? "-selected" : "")}>
+                            <MainMenuButton item={item} onMenuItemClick={onMenuItemClick}/>                        
+                            <div className="selected-pointer"></div>
+                        </NavLink> 
+                    )
+                } else return (
                     <NavLink to={item.url} 
                         className={({isActive}) => "nav-link" + (isActive ? "-selected" : "")}>
-                        <MainMenuButton item={item} onMenuItemClick={onMenuItemClick}/>
-                        <div className="selected-pointer"></div>
+                        <MainMenuButton item={item} onMenuItemClick={onMenuItemClick}/>                                                
                     </NavLink>                    
                 )
             })}
