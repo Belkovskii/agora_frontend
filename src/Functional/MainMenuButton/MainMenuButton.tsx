@@ -1,9 +1,9 @@
 import React from "react";
 import './MainMenuButton.css';
-import { SideMenuItem } from "../../Sidebar/SidebarTypes";
+import { SideMenuItemButton } from "../../Sidebar/SidebarTypes";
 
 const MainMenuButton : React.FunctionComponent<{
-    item : SideMenuItem, 
+    item : SideMenuItemButton, 
     onMenuItemClick : (key : number) => void
 }> = ({item, onMenuItemClick}) => {
     return (

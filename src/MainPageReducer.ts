@@ -3,36 +3,37 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 
 const items : MenuItem[] = [
-    {label : "Склад", isClicked : false, icon : 'StockIcon', key : 1, submenuItems : [
-        {label : "Остатки товаров", key : 10,  isClicked : false},
-        {label : "Отгрузка товара", key : 11,  isClicked : false},
-        {label : "Поступление товара", key : 12,  isClicked : false},
-        {label : "Перечень товаров", key : 13,  isClicked : false},
-        {label : "Перечень складов", key : 14,  isClicked : false}
+    {label : "Склад", isClicked : false, icon : 'StockIcon', url : "/stock/balance", key : 1, submenuItems : [
+        {label : "Остатки товаров", key : 10,  isClicked : false, url : "/stock/balance"},
+        {label : "Отгрузка товара", key : 11,  isClicked : false, url : "/stock/withdrawal"},
+        {label : "Поступление товара", key : 12,  isClicked : false, url : "/stock/receipts"},
+        {label : "Перечень товаров", key : 13,  isClicked : false, url : "/stock/itemslist"},
+        {label : "Перечень складов", key : 14,  isClicked : false, url : "/stock/stocklist"}
     ]}, 
-    {label : "Календарь", isClicked : false, icon : 'CalendarIcon', key : 2,  submenuItems : [
-        {label : "Календарь", key : 21,  isClicked : false}
+    {label : "Календарь", isClicked : false, icon : 'CalendarIcon', url : "/calendar/calendar", key : 2,  submenuItems : [
+        {label : "Календарь", key : 21,  isClicked : false, url : "/calendar/calendar"}
     ]},
-    {label : "Задачи", isClicked : false, icon : 'TaskListIcon', key : 3,  submenuItems : [
-        {label : "Задачи сотрудника", key : 31,  isClicked : false},
-        {label : "Kanban", key : 1,  isClicked : false}
+    {label : "Задачи", isClicked : false, icon : 'TaskListIcon', url : "/tasks/employeetasks", key : 3,  submenuItems : [
+        {label : "Задачи сотрудника", key : 31,  isClicked : false, url : "/tasks/employeetasks"},
+        {label : "Kanban", key : 1,  isClicked : false, url : "/tasks/kanban"}
     ]},
-    {label : "Работа с клиентами", isClicked : false, icon : 'CustomersIcon', key : 4,  submenuItems : [
-        {label : "Контакты клиентов", key : 41,  isClicked : false},
-        {label : "Стадии работы с клиентами", key : 42,  isClicked : false},
-        {label : "Клиенты - ответственные", key : 43,  isClicked : false}
+    {label : "Работа с клиентами", isClicked : false, icon : 'CustomersIcon', url : "/clients/contacts", key : 4,  submenuItems : [
+        {label : "Контакты клиентов", key : 41,  isClicked : false, url : "/clients/contacts"},
+        {label : "Стадии работы с клиентами", key : 42,  isClicked : false, url : "/clients/stages"},
+        {label : "Клиенты - ответственные", key : 43,  isClicked : false, url : "/clients/respnsible"}
     ]},
-    {label : "Продажи", isClicked : false, icon : 'SalesIcon', key : 5,  submenuItems : [
-        {label : "История продаж", key : 51,  isClicked : false},
-        {label : "Планируемые продажи", key : 52,  isClicked : false},
-        {label : "Заявки", key : 53,  isClicked : false}
+    {label : "Продажи", isClicked : false, icon : 'SalesIcon', url : "/sales/history", key : 5,  submenuItems : [
+        {label : "История продаж", key : 51,  isClicked : false, url : "/sales/history"},
+        {label : "Планируемые продажи", key : 52,  isClicked : false, url : "/sales/plan"},
+        {label : "Заявки", key : 53,  isClicked : false, url : "/sales/requests"}
     ]},
 ];
 
 export interface SubmenuItem {
     label : string,
     isClicked : boolean,  
-    key : number  
+    key : number,
+    url : string  
 }
 
 export interface MenuItem {
@@ -40,6 +41,7 @@ export interface MenuItem {
     isClicked : boolean,
     icon : string, //React.FunctionComponent<React.SVGProps<SVGSVGElement>>   
     key : number, 
+    url : string,
     submenuItems : SubmenuItem[]
 }
 

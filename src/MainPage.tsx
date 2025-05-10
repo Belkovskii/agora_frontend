@@ -11,10 +11,12 @@ import {ReactComponent as CustomersIcon} from "./Sidebar/icons/customer.svg";
 import {ReactComponent as TaskListIcon} from "./Sidebar/icons/tasklist.svg";
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './store';
-import { SideMenuItem } from './Sidebar/SidebarTypes';
+import { SideMenuItemButton } from './Sidebar/SidebarTypes';
 import { MenuItem, setMenuItemClicked, setSubmenuItemClicked } from './MainPageReducer';
 import { stat } from 'fs';
 import { SubmenuItemButton } from './Submenu/SubmenuButton/SubmenuTypes';
+import { NavLink } from "react-router-dom";
+
 
 const logoToNames : Map<string, React.FunctionComponent<React.SVGProps<SVGSVGElement>>> = new Map([
   ['StockIcon', StockIcon],
@@ -55,7 +57,7 @@ const MainPage : React.FunctionComponent = () => {
   const openSubMenu = () => {
     if (containerRef.current) {
       const container = containerRef.current;
-      container.style.gridTemplateColumns = "1fr 1fr 8fr";
+      container.style.gridTemplateColumns = "1.2fr 1fr 12fr";
     }
     if (subSidebarRef.current) {
       subSidebarRef.current.classList.add('fade-in');      
@@ -82,15 +84,20 @@ const MainPage : React.FunctionComponent = () => {
 
   const menuState = useSelector((state: RootState) => state);
 
-  const items : SideMenuItem[] = menuState.mainMenu.menu.map(item => ({
+  const items : SideMenuItemButton[] = menuState.mainMenu.menu.map(item => ({
     icon : logoToNames.get(item.icon)!,
     label : item.label,
-    value : item.key
+    value : item.key,  
+    url : item.url  
   }));
 
-  const clikedItem = menuState.mainMenu.menu.find(item => item.isClicked);
+  const clikedItem = menuState.mainMenu.menu.find(item => item.isClicked);  
   const submenuItems : SubmenuItemButton[] = clikedItem ? 
-    clikedItem.submenuItems.map(submenuItem => ({label : submenuItem.label, key : submenuItem.key})) : [];
+    clikedItem.submenuItems.map(submenuItem => ({
+      label : submenuItem.label, 
+      key : submenuItem.key,
+      url : submenuItem.url
+    })) : [];
 
   const onMenuItemClick = (itemKey : number) => {
     dispatch(setMenuItemClicked(itemKey));
@@ -106,12 +113,15 @@ const MainPage : React.FunctionComponent = () => {
       <header className="header">   
         <div className="main-menu">
 
-          <div className='logotype' onClick={()=> setSubmenuState(false)}>
+          <NavLink to="" className="logo-nav">
+            <div className='logotype' onClick={()=> setSubmenuState(false)}>
             <div className='logo-container'>
               <Parthenon className='logo' />            
             </div>
             <h1>Agora CRM</h1>
           </div>
+          </NavLink>
+          
           
           
         </div>

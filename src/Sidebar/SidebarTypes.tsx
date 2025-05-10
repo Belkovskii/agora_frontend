@@ -1,7 +1,8 @@
 
 
-export interface SideMenuItem {
+export interface SideMenuItemButton {
     icon : React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
     label : string,
-    value : number
+    value : number,
+    url : string
 }

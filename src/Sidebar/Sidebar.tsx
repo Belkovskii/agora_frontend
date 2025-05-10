@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import MainMenuButton from "../Functional/MainMenuButton/MainMenuButton";
 import Menu from "react-select/dist/declarations/src/components/Menu";
 import './Sidebar.css';
-import {SideMenuItem} from './SidebarTypes'
+import {SideMenuItemButton} from './SidebarTypes'
+import { NavLink } from "react-router-dom";
 
 
 
 const Sidebar : React.FunctionComponent<{
-    items : SideMenuItem[], 
+    items : SideMenuItemButton[], 
     onMenuItemClick : (key : number) => void}
 > = ({items, onMenuItemClick}) => {
     
@@ -15,7 +16,11 @@ const Sidebar : React.FunctionComponent<{
         <div className="menu-items-column">
             {items.map(item => {
                 return (
-                    <MainMenuButton item={item} onMenuItemClick={onMenuItemClick}/>
+                    <NavLink to={item.url} 
+                        className={({isActive}) => "nav-link" + (isActive ? "-selected" : "")}>
+                        <MainMenuButton item={item} onMenuItemClick={onMenuItemClick}/>
+                        <div className="selected-pointer"></div>
+                    </NavLink>                    
                 )
             })}
         </div>

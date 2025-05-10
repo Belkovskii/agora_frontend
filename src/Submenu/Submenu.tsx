@@ -9,7 +9,11 @@ const Submenu : React.FunctionComponent<{
 }> = ({onSubmenuItemClick, items}) => {
     return (
         <div className="submenuItemsContainer">
-            {items.map(item => <SubmenuButton onSubmenuItemClick={onSubmenuItemClick} item={item}/>)}
+            {items.map(item => (
+                
+                <SubmenuButton onSubmenuItemClick={onSubmenuItemClick} item={item}/>
+            
+            ))}
         </div>
     )
 }

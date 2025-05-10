@@ -1,4 +1,5 @@
 export interface SubmenuItemButton {
     label : string;
-    key : number
+    key : number;
+    url : string;
 }
