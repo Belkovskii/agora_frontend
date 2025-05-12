@@ -1,31 +1,31 @@
 import React, {useEffect, useState} from "react";
-import Balance from "./Balance"
 import { useDispatch, useSelector } from 'react-redux';
 import { 
     fetchItems, 
     setNewItems, 
     fetchStocks, 
-    setNewStocks,
+    setNewStocks, 
+    getWithdrawals,
     setSelectedItem,
-    setSelectedStock,
-    retrieveBalance
- } from "./BalanceSlice";
-import {RootState} from "./../../../store";
-import { AppDispatch } from "./../../../store";
+    setSelectedStock
+} from "./WithdrawalSlice";
+import { AppDispatch, RootState } from "./../../../store";
+import Withdrawal from "./Withdrawal";
 
-const Balance_CC : React.FunctionComponent = () => {
+
+const Withdrawal_CC = () => {
+    
     let [item, setItem] = useState({label : "", value : ""});
     let [toItem, setToItem] = useState(10);
     let [fromItem, setFromItem] = useState(0);
-
+    
     let [stock, setStock] = useState({label : "", value : ""});
     let [toStock, setToStock] = useState(10);
     let [fromStock, setFromStock] = useState(0);
 
     const dispatch = useDispatch<AppDispatch>();
-
-    const stockBalanceState = useSelector((state: RootState) => state.stock.balance);
-
+    const stockBalanceState = useSelector((state: RootState) => state.stock.withdrawal);
+    
     useEffect(() => {        
         dispatch(fetchItems({ from : fromItem, to : toItem, name : item.label }));
     }, [toItem, fromItem]);
@@ -44,6 +44,38 @@ const Balance_CC : React.FunctionComponent = () => {
         dispatch(setNewStocks({from : fromStock, to : toStock, name : stock.label }));
     }, [stock]);
 
+    const handleChange = {
+        handleItemChange(selectedOption: any) {
+            if (selectedOption) {                           
+                setItem(selectedOption);  
+                dispatch(setSelectedItem(selectedOption.value));
+                console.log(stock.value)
+                if (stock.value.length > 0) {                    
+                    dispatch(getWithdrawals({
+                        stockId : stock.value, 
+                        inventoryItemId : selectedOption.value,
+                        from : 0,
+                        to : 1
+                    }))
+                }
+            }
+        },
+        handleStockChange(selectedOption: any) {
+            if (selectedOption) {
+                setStock(selectedOption);
+                dispatch(setSelectedStock(selectedOption.value));
+                if (item.value.length > 0) {
+                    console.log(90)
+                    dispatch(getWithdrawals({
+                        stockId : stock.value, 
+                        inventoryItemId : selectedOption.value,
+                        from : 0,
+                        to : 1
+                    }))
+                }
+            }
+        }        
+    }
 
     const filterByName = {
         filterItemByName(inputValue : any) { 
@@ -70,39 +102,14 @@ const Balance_CC : React.FunctionComponent = () => {
         }     
     }
 
-    const handleChange = {
-        handleItemChange(selectedOption: any) {
-            if (selectedOption) {                           
-                setItem(selectedOption);  
-                dispatch(setSelectedItem(selectedOption.value));
-                console.log(stock.value)
-                if (stock.value.length > 0) {                    
-                    dispatch(retrieveBalance({stockId : stock.value, itemId : selectedOption.value}))
-                }
-            }
-        },
-        handleStockChange(selectedOption: any) {
-            if (selectedOption) {
-                setStock(selectedOption);
-                dispatch(setSelectedStock(selectedOption.value));
-                if (item.value.length > 0) {
-                    console.log(90)
-                    dispatch(retrieveBalance({stockId : selectedOption.value, itemId : item.value}))
-                }
-            }
-        }        
-    }
-
-
     return (
-        <Balance 
-            stockBalanceState={stockBalanceState}
+        <Withdrawal
+            stockWithdrawalState={stockBalanceState}
             filterByName={filterByName}
             handleChange={handleChange}                               
-            onMenuScrollDown={onMenuScrollDown}  
-            balance={stockBalanceState.itemsLeft}
+            onMenuScrollDown={onMenuScrollDown} 
         />
     )
 }
 
-export default Balance_CC;
+export default Withdrawal_CC;
