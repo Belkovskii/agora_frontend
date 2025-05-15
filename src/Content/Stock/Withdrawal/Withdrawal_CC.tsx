@@ -7,7 +7,8 @@ import {
     setNewStocks, 
     getWithdrawals,
     setSelectedItem,
-    setSelectedStock
+    setSelectedStock,
+    setWithdrawalsEmpty
 } from "./WithdrawalSlice";
 import { AppDispatch, RootState } from "./../../../store";
 import Withdrawal from "./Withdrawal";
@@ -24,7 +25,7 @@ const Withdrawal_CC = () => {
     let [fromStock, setFromStock] = useState(0);
 
     const dispatch = useDispatch<AppDispatch>();
-    const stockBalanceState = useSelector((state: RootState) => state.stock.withdrawal);
+    const stockWithdrawalState = useSelector((state: RootState) => state.stock.withdrawal);
     
     useEffect(() => {        
         dispatch(fetchItems({ from : fromItem, to : toItem, name : item.label }));
@@ -47,10 +48,12 @@ const Withdrawal_CC = () => {
     const handleChange = {
         handleItemChange(selectedOption: any) {
             if (selectedOption) {                           
-                setItem(selectedOption);  
-                dispatch(setSelectedItem(selectedOption.value));
+                setItem(selectedOption);
+                const selectedItem = stockWithdrawalState.items.find(i => i.id === selectedOption.value);
+                dispatch(setSelectedItem(selectedItem!));
                 console.log(stock.value)
-                if (stock.value.length > 0) {                    
+                if (stock.value.length > 0) {  
+                    dispatch(setWithdrawalsEmpty());                  
                     dispatch(getWithdrawals({
                         stockId : stock.value, 
                         inventoryItemId : selectedOption.value,
@@ -63,12 +66,13 @@ const Withdrawal_CC = () => {
         handleStockChange(selectedOption: any) {
             if (selectedOption) {
                 setStock(selectedOption);
-                dispatch(setSelectedStock(selectedOption.value));
-                if (item.value.length > 0) {
-                    console.log(90)
+                const selectedStock = stockWithdrawalState.stocks.find(s => s.id === selectedOption.value);
+                dispatch(setSelectedStock(selectedStock!));
+                if (item.value.length > 0) {  
+                    dispatch(setWithdrawalsEmpty());                  
                     dispatch(getWithdrawals({
-                        stockId : stock.value, 
-                        inventoryItemId : selectedOption.value,
+                        stockId : selectedOption.value, 
+                        inventoryItemId : item.value,
                         from : 0,
                         to : 1
                     }))
@@ -104,7 +108,7 @@ const Withdrawal_CC = () => {
 
     return (
         <Withdrawal
-            stockWithdrawalState={stockBalanceState}
+            stockWithdrawalState={stockWithdrawalState}
             filterByName={filterByName}
             handleChange={handleChange}                               
             onMenuScrollDown={onMenuScrollDown} 

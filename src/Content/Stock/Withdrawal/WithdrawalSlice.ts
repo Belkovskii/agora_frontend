@@ -117,6 +117,9 @@ const stockWithdrawalSlice = createSlice({
         },
         setSelectedStock(state, action: PayloadAction<Stock>) : void {
             state.chosenStock = action.payload;
+        },
+        setWithdrawalsEmpty(state, action: PayloadAction<void>) : void {
+            state.withdrawals = [];
         }
     },
     extraReducers : builder => { builder
@@ -153,5 +156,5 @@ const stockWithdrawalSlice = createSlice({
 })
 
 export {fetchItems, setNewItems, fetchStocks, setNewStocks, getWithdrawals};
-export const { setSelectedItem, setSelectedStock} = stockWithdrawalSlice.actions;
+export const { setSelectedItem, setSelectedStock, setWithdrawalsEmpty} = stockWithdrawalSlice.actions;
 export default stockWithdrawalSlice.reducer;

@@ -32,36 +32,40 @@ const Balance : React.FunctionComponent<{
 
     return(
         <div>
-            <div>
+            <div  className="headerText">
                 <h1>Остатки товара</h1>
             </div>
-            <div className="selectItemLabel">
-                <span>Выберите товар:</span>
-            </div>
-            <div className="itemScrollContainer">
-                <InfiniteScrollWithSearch
-                    filterByInput = {filterItemByName}
-                    handleSelect = {handleItemChange} 
-                    options = {itemOptions}
-                    handleCountChange = {onItemMenuScrollDown}
-                />
+
+            <div className="mainTextContainer">
+                <div className="selectItemLabel">
+                    <span>Выберите товар:</span>
+                </div>
+                <div className="itemScrollContainer">
+                    <InfiniteScrollWithSearch
+                        filterByInput = {filterItemByName}
+                        handleSelect = {handleItemChange} 
+                        options = {itemOptions}
+                        handleCountChange = {onItemMenuScrollDown}
+                    />
+                </div>
+
+                <div className="selectStockLabel">
+                    <span>Выберите склад:</span>
+                </div>
+                <div className="stockScrollContainer">
+                    <InfiniteScrollWithSearch
+                        filterByInput = {filterStockByName}
+                        handleSelect = {handleStockChange} 
+                        options = {stockOptions}
+                        handleCountChange = {onStockMenuScrollDown}
+                    />
+                </div>
+                <div  className="itemsLeftSpan">
+                    <span>Остаток товара на складе: {balance}</span>
+                </div>
             </div>
 
-            <div className="selectStockLabel">
-                <span>Выберите склад:</span>
-            </div>
-            <div className="stockScrollContainer">
-                <InfiniteScrollWithSearch
-                    filterByInput = {filterStockByName}
-                    handleSelect = {handleStockChange} 
-                    options = {stockOptions}
-                    handleCountChange = {onStockMenuScrollDown}
-                />
-            </div>
-            <div  className="itemsLeftSpan">
-                <span>Остаток товара на складе: {balance}</span>
-            </div>
-            
+
         </div>
     )
 }
