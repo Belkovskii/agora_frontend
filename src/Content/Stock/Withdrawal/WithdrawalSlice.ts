@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Item, Stock } from "../StockTypes";
 import connectionData from "../../../Connection";
-import { StockWithdrawalState, Withdrawal } from "./WithdrawalTypes";
+import { StockWithdrawalState, Withdrawal, NewWithdrawal } from "./WithdrawalTypes";
 
 const initialState = new StockWithdrawalState();
 
@@ -108,6 +108,29 @@ const getWithdrawals = createAsyncThunk<Withdrawal[], {stockId : string, invento
     }
 );
 
+const registerNewWithdrawal = createAsyncThunk<{success : boolean}, NewWithdrawal>(
+    'stockWithdrawal/createWithdrawal',
+    async ({stockId, inventoryItemId, withdrawalDate, amount, amountForFractional}) => {    
+        const endpoint = `${connectionData.host}/Withdrawal`;
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                stockId,
+                inventoryItemId,
+                withdrawalDate,
+                amount, 
+                amountForFractional
+             })
+        })
+        if (!response.ok) {
+            throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return {success : data.success};
+    }
+)
+
 const stockWithdrawalSlice = createSlice({
     name : "stockWithdrawal",
     initialState,
@@ -151,10 +174,10 @@ const stockWithdrawalSlice = createSlice({
         })
         .addCase(getWithdrawals.fulfilled, (state, action) => {
             return {...state, withdrawals : [...state.withdrawals, ...action.payload]}
-        })     
+        })        
     }
 })
 
-export {fetchItems, setNewItems, fetchStocks, setNewStocks, getWithdrawals};
+export {fetchItems, setNewItems, fetchStocks, setNewStocks, getWithdrawals, registerNewWithdrawal};
 export const { setSelectedItem, setSelectedStock, setWithdrawalsEmpty} = stockWithdrawalSlice.actions;
 export default stockWithdrawalSlice.reducer;

@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import InfiniteScrollWithSearch from "../../../Functional/InfiniteScrollWithSearch/InfiniteScrollWithSearch";
 import { StockWithdrawalState } from "./WithdrawalTypes";
 import './Withdrawal.css';
+import SystemButton from "../../../Functional/SystemButton/SystemButton";
+import ModalWindowWithdrawalReceipt from "../../../Functional/ModalWindow/ModalWindowWithdrawalReceipt";
 
 type FilterByNameFn = {
     filterItemByName : (value : any) => void,
@@ -48,6 +50,11 @@ const Withdrawal: React.FunctionComponent<{
             )
         }
     }
+    const [isModalActive, setIsModalActive] = useState(false);
+
+    const onModalSubmit = (data : string) => {
+        console.log(`data from modal: ${data}`)
+    }
 
     return (
         <div>
@@ -84,6 +91,21 @@ const Withdrawal: React.FunctionComponent<{
                     <span>{getWithdrawalData()}</span>
                 </div>
             
+                <div>
+                    <SystemButton
+                        onClickFunction={()=> setIsModalActive(isOpened => !isOpened)}
+                        label="Зарегистрировать списание товара"
+                    />
+                </div>
+
+                <div>
+                    <ModalWindowWithdrawalReceipt 
+                        isAcitve={isModalActive} 
+                        isWithdrawal={true}
+                        onReject={()=>setIsModalActive(false)}
+                        onSubmit={onModalSubmit}
+                    />
+                </div>
 
             </div>
         </div>

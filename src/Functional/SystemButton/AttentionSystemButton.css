@@ -1,0 +1,15 @@
+.attentionSystemButton {
+    min-width: 100px;  
+    border: solid 2px #b51414;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #b51414;
+    text-align: center;
+}
+
+.attentionSystemButton:active {
+    transform: translateY(2px);
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.2);
+}

@@ -1,3 +1,9 @@
+.btnContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 .buttonContainer {
     width: 90%;
     height: 40px;
@@ -16,4 +22,12 @@
 .buttonContainer:hover {
     cursor: pointer;
     color : #b6d8ea;
+}
+
+.arrow {
+    width: 0px;
+    height: 0px;
+    border-left: 10px solid #152837;
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
 }

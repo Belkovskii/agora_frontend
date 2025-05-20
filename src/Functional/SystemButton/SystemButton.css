@@ -1,0 +1,14 @@
+.systemButton {
+    min-width: 100px;  
+    border: solid 2px #152837;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.systemButton:active {
+    transform: translateY(2px);
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.2);
+}

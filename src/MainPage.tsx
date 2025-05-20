@@ -98,7 +98,8 @@ const MainPage : React.FunctionComponent = () => {
     clikedItem.submenuItems.map(submenuItem => ({
       label : submenuItem.label, 
       key : submenuItem.key,
-      url : submenuItem.url
+      url : submenuItem.url,
+      isClicked : submenuItem.isClicked
     })) : [];
 
   const onMenuItemClick = (itemKey : number) => {
