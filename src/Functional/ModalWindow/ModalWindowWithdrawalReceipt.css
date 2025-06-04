@@ -23,6 +23,9 @@
 
 .inputArea {
     height: 90%;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
 }
 
 .dateInput {
@@ -33,6 +36,17 @@
     font-size: 16px;
     background-color: #f0f8ff;
     color: #333;
+}
+
+.amountInputArea {
+    display: flex;
+    align-items: center;
+}
+
+.amountInput {
+    width: 100px;
+    height: 25px;
+    margin-left: 13px;
 }
 
 .buttons {

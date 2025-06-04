@@ -3,10 +3,14 @@ import './SystemButton.css'
 
 const SystemButton : React.FunctionComponent<{
     onClickFunction : () => void,
-    label : string
-}> = ({onClickFunction, label}) => {
+    label : string,
+    disabled : boolean
+}> = ({onClickFunction, label, disabled}) => {
+    const className = "systemButton" + (disabled ? " disabled" : "");
     return (
-        <div className="systemButton" onClick={onClickFunction}>
+        <div 
+            className={className} 
+            onClick={() => !disabled && onClickFunction() }>
             {label}
         </div>
     )

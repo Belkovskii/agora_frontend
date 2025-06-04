@@ -7,6 +7,7 @@ export interface Withdrawal {
     withdrawalDate : string;
     amount : number;
     amountForFractional : number;
+    reason: string;
 }
 
 export interface NewWithdrawal {    
@@ -15,6 +16,7 @@ export interface NewWithdrawal {
     withdrawalDate : string;
     amount : number;
     amountForFractional : number;
+    reason: string;
 }
 
 export class StockWithdrawalState {
@@ -23,5 +25,6 @@ export class StockWithdrawalState {
     chosenItem : Item | null = null;
     chosenStock : Stock | null = null;
     withdrawals : Withdrawal[] = [];
-    newWithdrawal : Withdrawal | null = null;
+    newWithdrawalId : string | null = null;
+    latestWithdrawal : Withdrawal | null = null;
 }

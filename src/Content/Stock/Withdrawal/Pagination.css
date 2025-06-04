@@ -1,0 +1,23 @@
+.arrow-left, .arrow-right {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.arrow-right {
+    transform: scale(-1, 1);
+}
+
+.pagination-container, .page-number-containers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-number-containers {
+    width: 45%;
+    align-items: anchor-center;
+}
+
+.page-num {
+    cursor: pointer;    
+}

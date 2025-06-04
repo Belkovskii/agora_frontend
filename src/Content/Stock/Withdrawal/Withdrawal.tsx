@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import InfiniteScrollWithSearch from "../../../Functional/InfiniteScrollWithSearch/InfiniteScrollWithSearch";
 import { StockWithdrawalState } from "./WithdrawalTypes";
+import { Withdrawal as WithdrawalType }  from "./WithdrawalTypes";
 import './Withdrawal.css';
 import SystemButton from "../../../Functional/SystemButton/SystemButton";
 import ModalWindowWithdrawalReceipt from "../../../Functional/ModalWindow/ModalWindowWithdrawalReceipt";
@@ -28,8 +29,19 @@ const Withdrawal: React.FunctionComponent<{
         stockWithdrawalState: StockWithdrawalState, 
         filterByName : FilterByNameFn,        
         handleChange : HandleChangeFn,        
-        onMenuScrollDown : OnMenyScrollFn,        
-    }> = ({stockWithdrawalState, filterByName, handleChange, onMenuScrollDown}) => {
+        onMenuScrollDown : OnMenyScrollFn,  
+        handleModalSubmit : (data : string) => void,
+        withdrawals : WithdrawalType[],
+        latestWithdrawal : WithdrawalType | null     
+    }> = ({
+        stockWithdrawalState, 
+        filterByName, 
+        handleChange, 
+        onMenuScrollDown, 
+        handleModalSubmit,
+        withdrawals, 
+        latestWithdrawal
+    }) => {
 
     const itemOptions  = stockWithdrawalState.items.map(item => ({ label: item.name, value: item.id }));
     const stockOptions  = stockWithdrawalState.stocks.map(stock => ({ label: stock.name, value: stock.id }));
@@ -37,24 +49,17 @@ const Withdrawal: React.FunctionComponent<{
     const {filterItemByName, filterStockByName} = filterByName;
     const {handleItemChange, handleStockChange} = handleChange;    
     const getWithdrawalData = () => {
-        if (stockWithdrawalState.withdrawals.length > 0) {
-            const lastWithdrawal = stockWithdrawalState.withdrawals[0];
+        if (latestWithdrawal) {            
             const item = stockWithdrawalState.chosenItem;
-            console.log('chosenItem :')
-            console.log(item)
-            const amount = lastWithdrawal.amount > 0 ? lastWithdrawal.amount : lastWithdrawal.amountForFractional;
+            const amount = latestWithdrawal.amount > 0 ? latestWithdrawal.amount : latestWithdrawal.amountForFractional;
             return (
                 <div className="withdrawalData">
-                    <span>Последнее списание: {amount} {item?.measurementUnit}.   {formatDate(lastWithdrawal.withdrawalDate)}</span>
+                    <span>Последнее списание: {amount} {item?.measurementUnit ?? "шт."}   {formatDate(latestWithdrawal.withdrawalDate)}</span>
                 </div>
             )
         }
     }
     const [isModalActive, setIsModalActive] = useState(false);
-
-    const onModalSubmit = (data : string) => {
-        console.log(`data from modal: ${data}`)
-    }
 
     return (
         <div>
@@ -95,6 +100,7 @@ const Withdrawal: React.FunctionComponent<{
                     <SystemButton
                         onClickFunction={()=> setIsModalActive(isOpened => !isOpened)}
                         label="Зарегистрировать списание товара"
+                        disabled={!stockWithdrawalState.chosenStock || !stockWithdrawalState.chosenItem}
                     />
                 </div>
 
@@ -102,8 +108,9 @@ const Withdrawal: React.FunctionComponent<{
                     <ModalWindowWithdrawalReceipt 
                         isAcitve={isModalActive} 
                         isWithdrawal={true}
+                        itemCountUnit={stockWithdrawalState.chosenItem?.measurementUnit ?? "шт"}
                         onReject={()=>setIsModalActive(false)}
-                        onSubmit={onModalSubmit}
+                        onSubmit={handleModalSubmit}
                     />
                 </div>
 

@@ -101,6 +101,10 @@ const stockBalanceSlice = createSlice({
     },
     setSelectedStock(state, action: PayloadAction<string>) : StockBalanceState {
         return {...state, chosenStockId : action.payload}
+    },
+    setItemsLeftZero(state, action: PayloadAction<void>) : StockBalanceState {
+        console.log(106)
+        return {...state, itemsLeft : 0}
     }
   },
   extraReducers: builder => {
@@ -132,5 +136,5 @@ const stockBalanceSlice = createSlice({
 }});
 
 export  { fetchItems, setNewItems, fetchStocks, setNewStocks, retrieveBalance };
-export const {setSelectedItem, setSelectedStock} = stockBalanceSlice.actions
+export const {setSelectedItem, setSelectedStock, setItemsLeftZero} = stockBalanceSlice.actions
 export default stockBalanceSlice.reducer;

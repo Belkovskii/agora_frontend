@@ -8,10 +8,15 @@ import {
     getWithdrawals,
     setSelectedItem,
     setSelectedStock,
-    setWithdrawalsEmpty
+    setWithdrawalsEmpty,
+    registerNewWithdrawal,
+    getLatestWithdrawal 
 } from "./WithdrawalSlice";
 import { AppDispatch, RootState } from "./../../../store";
 import Withdrawal from "./Withdrawal";
+import { NewWithdrawal } from "./WithdrawalTypes";
+import WithdrawalsHistory from "./WithdrawalsHistory";
+import './Withdrawal_CC.css';
 
 
 const Withdrawal_CC = () => {
@@ -26,6 +31,7 @@ const Withdrawal_CC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const stockWithdrawalState = useSelector((state: RootState) => state.stock.withdrawal);
+    const newItemId = useSelector((state : RootState) => state.stock.withdrawal.newWithdrawalId);
     
     useEffect(() => {        
         dispatch(fetchItems({ from : fromItem, to : toItem, name : item.label }));
@@ -45,6 +51,41 @@ const Withdrawal_CC = () => {
         dispatch(setNewStocks({from : fromStock, to : toStock, name : stock.label }));
     }, [stock]);
 
+    useEffect(() => {        
+        if (stockWithdrawalState.newWithdrawalId && stockWithdrawalState.newWithdrawalId.length > 0) {
+            dispatch(setWithdrawalsEmpty());                        
+            dispatch(getLatestWithdrawal({
+                stockId : stockWithdrawalState.chosenStock?.id!, 
+                inventoryItemId : stockWithdrawalState.chosenItem?.id!                
+            }))
+            dispatch(getWithdrawals({
+                stockId : stockWithdrawalState.chosenStock?.id!, 
+                inventoryItemId : stockWithdrawalState.chosenItem?.id!,
+                from : 0,
+                to : 3 // change to 10
+            }))
+        }
+    }, [newItemId])
+
+    interface WithdrawalData {
+        date : string;
+        amount : number
+    }
+
+    const handleModalSubmit = (withdrawalDataString : string) => {
+        const {date, amount} : WithdrawalData = JSON.parse(withdrawalDataString);
+        const isAmountInteger = Number.isInteger(amount);
+        const newWithdrawal : NewWithdrawal = {
+            stockId: stockWithdrawalState.chosenStock?.id!,
+            inventoryItemId : stockWithdrawalState.chosenItem?.id!,
+            withdrawalDate : date,
+            amount : isAmountInteger ? amount : 0,
+            amountForFractional : isAmountInteger ? 0.0 : amount,
+            reason: "Другое"
+        }
+        dispatch(registerNewWithdrawal(newWithdrawal));
+    }
+
     const handleChange = {
         handleItemChange(selectedOption: any) {
             if (selectedOption) {                           
@@ -54,12 +95,16 @@ const Withdrawal_CC = () => {
                 console.log(stock.value)
                 if (stock.value.length > 0) {  
                     dispatch(setWithdrawalsEmpty());                  
+                    dispatch(getLatestWithdrawal({
+                        stockId : stock.value, 
+                        inventoryItemId : selectedOption.value
+                    }))
                     dispatch(getWithdrawals({
                         stockId : stock.value, 
                         inventoryItemId : selectedOption.value,
                         from : 0,
-                        to : 1
-                    }))
+                        to : 3
+                    }));
                 }
             }
         },
@@ -70,11 +115,15 @@ const Withdrawal_CC = () => {
                 dispatch(setSelectedStock(selectedStock!));
                 if (item.value.length > 0) {  
                     dispatch(setWithdrawalsEmpty());                  
+                    dispatch(getLatestWithdrawal({
+                        stockId : selectedOption.value, 
+                        inventoryItemId : item.value
+                    }))
                     dispatch(getWithdrawals({
                         stockId : selectedOption.value, 
                         inventoryItemId : item.value,
                         from : 0,
-                        to : 1
+                        to : 3
                     }))
                 }
             }
@@ -105,14 +154,28 @@ const Withdrawal_CC = () => {
             setToStock(to);
         }     
     }
-
+    
     return (
-        <Withdrawal
-            stockWithdrawalState={stockWithdrawalState}
-            filterByName={filterByName}
-            handleChange={handleChange}                               
-            onMenuScrollDown={onMenuScrollDown} 
-        />
+        <div className="withdrawals-cc-container">
+            <Withdrawal
+                stockWithdrawalState={stockWithdrawalState}
+                filterByName={filterByName}
+                handleChange={handleChange}                               
+                onMenuScrollDown={onMenuScrollDown} 
+                handleModalSubmit={handleModalSubmit}
+                withdrawals={stockWithdrawalState.withdrawals}
+                latestWithdrawal={stockWithdrawalState.latestWithdrawal}
+            />
+            <div className="withdrawals-cc-history-container">
+                <WithdrawalsHistory                
+                    lastWithdrawalDate={stockWithdrawalState.latestWithdrawal?.withdrawalDate} 
+                    withdrawals={stockWithdrawalState.withdrawals} 
+                    onSearchClick={() => console.log("search")}
+                />
+            </div>
+            
+        </div>
+        
     )
 }
 

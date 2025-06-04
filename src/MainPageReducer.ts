@@ -104,10 +104,12 @@ const mainPageMenuSlice = createSlice({
         const clickedMenuItemKey = action.payload;
         state.menu = state.menu.map(item => {
           if (item.key === clickedMenuItemKey) {
-            const newSubmenuItems = [...item.submenuItems];
-            if (newSubmenuItems.length > 0) {
-              newSubmenuItems[0] = { ...newSubmenuItems[0], isClicked: true };
-            }
+            let newSubmenuItems = [...item.submenuItems].map((submenuItem, index) => {
+              return {
+                ...submenuItem,
+                isClicked : index === 0
+              }
+            });            
             return {
               ...item,
               isClicked: true,
